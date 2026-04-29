@@ -16,6 +16,25 @@ A collection of data science notebooks I've worked on. Each project folder has i
 
 ---
 
+## 👋 About Me
+
+I'm **amarpoji** — a data science learner exploring machine learning, one notebook at a time. I started from scratch and I'm still at the beginning, so every project here reflects what I'm currently figuring out. No gatekeeping, no fluff — just honest work-in-progress.
+
+If you're also learning, you're in the right place.
+
+---
+
+## 🎯 Purpose
+
+This repo exists for one reason: **to share**. If even one person learns something from reading my notebooks — a new technique, a bug to avoid, or just the confidence to start their own project — then this repo has done its job.
+
+Every notebook here is:
+- **Self-contained** — open it and follow along from start to finish
+- **Commented** — I write notes to myself (and you) about what each step does
+- **Free** — no paywalls, no sign-ups, just click and learn
+
+---
+
 ## 📚 Projects
 
 | # | Project | Description | Domain |
