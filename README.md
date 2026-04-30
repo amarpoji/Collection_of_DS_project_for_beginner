@@ -48,6 +48,7 @@ I'm **amarpoji** — learning data science one project at a time. This repo is m
 | # | Project | Domain | Key Skills | Tags | F1 |
 |:-:|:--------|:------:|:-----------|:----:|:--:|
 | 1 | [**NLP with Disaster Tweets**](./NLP_with_disaster_tweet/) | NLP · Classification | TF-IDF, Logistic Regression, NLTK, GridSearchCV | `text` `kaggle` | **0.744** |
+| 2 | [**Spotify Song Recommender**](./spotify_song_recommender/) | Recommender Systems | cosine similarity, MinMaxScaler, audio features | `music` `huggingface` | **—** |
 
 <details>
 <summary><strong>📌 Planned / In Progress</strong></summary>
@@ -58,7 +59,6 @@ I'm **amarpoji** — learning data science one project at a time. This repo is m
 | — | Titanic Survival Prediction | Classification | pandas, feature engineering, ensemble |
 | — | House Price Regression | Regression | EDA, correlation, Ridge/Lasso |
 | — | Customer Segmentation | Clustering | K-Means, PCA, silhouette analysis |
-| — | Spotify Song Recommender | Recommender | cosine similarity, content-based filtering |
 | — | Credit Card Fraud Detection | Anomaly | imbalance handling, SMOTE, ROC-AUC |
 | — | Sentiment Analysis on Movie Reviews | NLP | word embeddings, transformers, BERT |
 
