@@ -50,17 +50,46 @@ I'm **amarpoji** — learning data science one project at a time. This repo is m
 | 1 | [**NLP with Disaster Tweets**](./NLP_with_disaster_tweet/) | NLP · Classification | TF-IDF, Logistic Regression, NLTK, GridSearchCV | `text` `kaggle` | **0.744** |
 | 2 | [**Spotify Song Recommender**](./spotify_song_recommender/) | Recommender Systems | cosine similarity, MinMaxScaler, audio features | `music` `huggingface` | **—** |
 | 3 | [**Sentiment Analysis on Twitter**](./sentiment_analysis/) | NLP · Classification | TF-IDF, Logistic Regression, Naive Bayes, NLTK, WordCloud | `text` `twitter` | **0.769** |
+| 4 | [**Customer Segmentation**](./customer_segmentation/) | Clustering · Unsupervised | K-Means, PCA, Silhouette Analysis, StandardScaler | `clustering` `retail` | **0.529** |
 
 <details>
-<summary><strong>📌 Planned / In Progress</strong></summary>
+<summary><strong>📌 Planned / In Progress (Jupyter Notebooks)</strong></summary>
 <br/>
+
+*Each project will be built as a self-contained Jupyter notebook with: data generation, EDA, modeling, visualisations, and business recommendations.*
 
 | # | Project Idea | Domain | Skills Covered |
 |:-:|:-------------|:------:|:---------------|
-| — | Titanic Survival Prediction | Classification | pandas, feature engineering, ensemble |
-| — | House Price Regression | Regression | EDA, correlation, Ridge/Lasso |
-| — | Customer Segmentation | Clustering | K-Means, PCA, silhouette analysis |
-| — | Credit Card Fraud Detection | Anomaly | imbalance handling, SMOTE, ROC-AUC |
+| 1 | **Titanic Survival Prediction** | Classification | pandas, feature engineering, ensemble, missing value imputation |
+| 2 | **House Price Regression** | Regression | EDA, correlation, Ridge/Lasso, feature selection |
+| 3 | **Credit Card Fraud Detection** | Anomaly | imbalance handling, SMOTE, ROC-AUC, undersampling |
+| 4 | **Image Classifier (CIFAR-10)** | Computer Vision | CNNs, data augmentation, transfer learning, PyTorch/TF |
+| 5 | **Stock Price Forecasting** | Time Series | ARIMA, Prophet, LSTM, stationarity, rolling statistics |
+| 6 | **Movie Recommender System** | Recommender Systems | collaborative filtering, matrix factorisation, SVD |
+| 7 | **Chatbot with BERT** | NLP · Transformers | fine-tuning, Hugging Face, tokenisation, attention |
+| 8 | **A/B Testing Analyzer** | Statistics | hypothesis testing, confidence intervals, power analysis |
+| 9 | **Model Interpretability (SHAP/LIME)** | XAI · MLOps | SHAP values, LIME, feature importance, model debugging |
+|10 | **Deploy ML Model as API** | MLOps | FastAPI, Docker, CI/CD, model serialisation |
+|11 | **Web Scraper + Topic Modeling** | NLP · Scraping | BeautifulSoup, LDA, NMF, text preprocessing |
+|12 | **Fake News Detection** | NLP · Classification | word embeddings, LSTMs, attention, explainability |
+|13 | **LLM Fine-tuning with LoRA** | Generative AI · LLMs | LoRA, PEFT, QLoRA, instruction tuning |
+|14 | **Time Series Anomaly Detection** | Anomaly · IoT | isolation forest, autoencoders, sliding windows |
+|15 | **End-to-End MLOps Pipeline** | MLOps · DevOps | DVC, MLflow, feature store, model registry, monitoring |
+|16 | **Olympic Games 120 Years** | EDA · Sports | historical trends, medal counts, country analysis, storytelling |
+|17 | **Video Game Sales Analysis** | EDA · Gaming | genre trends, platform lifecycle, regional analysis, regression |
+|18 | **Breast Cancer Detection** | Medical · Classification | feature selection, SVM, confusion matrices, ROC curves |
+|19 | **WhatsApp Chat Analyzer** | NLP · Personal | emoji stats, sentiment over time, word clouds, message patterns |
+|20 | **Wine Quality Prediction** | Regression · Chemistry | chemical features, feature importance, model comparison |
+|21 | **Bike Sharing Demand** | Time Series · Regression | seasonality, weather impact, holiday effects, lag features |
+|22 | **Airbnb Price Prediction** | Regression · Geo | location encoding, amenities, price optimisation, outliers |
+|23 | **Netflix Content Analysis** | EDA · Media | content trends over years, country distribution, rating analysis |
+|24 | **Health Insurance Cost** | Regression · Healthcare | BMI analysis, smoker impact, region-wise costs, interaction terms |
+|25 | **Student Grades Predictor** | Classification · Education | demographic factors, study habits, feature engineering |
+|26 | **Market Basket Analysis** | Association Rules · Retail | Apriori algorithm, frequent itemsets, product placement insights |
+|27 | **Sleep Health & Lifestyle** | EDA · Health | sleep vs exercise, occupation effects, lifestyle correlations |
+|28 | **Global Terrorism Database** | EDA · Geopolitics | attack trends, target analysis, casualty patterns, mapping |
+|29 | **Pokemon Battle Predictor** | Classification · Fun | type advantages, stats analysis, team building, visualisations |
+|30 | **Star Type Classification** | Astronomy · Physics | spectral analysis, HR diagram, magnitude vs temperature |
 
 > *Open an issue or PR if you'd like to collaborate on any of these!*
 
