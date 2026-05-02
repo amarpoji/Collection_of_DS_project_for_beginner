@@ -50,7 +50,7 @@ I'm **amarpoji** — learning data science one project at a time. This repo is m
 | 1 | [**NLP with Disaster Tweets**](./NLP_with_disaster_tweet/) | NLP · Classification | TF-IDF, Logistic Regression, NLTK, GridSearchCV | `text` `kaggle` | **0.744** |
 | 2 | [**Spotify Song Recommender**](./spotify_song_recommender/) | Recommender Systems | cosine similarity, MinMaxScaler, audio features | `music` `huggingface` | **—** |
 | 3 | [**Sentiment Analysis on Twitter**](./sentiment_analysis/) | NLP · Classification | TF-IDF, Logistic Regression, Naive Bayes, NLTK, WordCloud | `text` `twitter` | **0.769** |
-| 4 | [**Customer Segmentation**](./customer_segmentation/) | Clustering · Unsupervised | K-Means, PCA, Silhouette Analysis, StandardScaler | `clustering` `retail` | **0.529** |
+| 4 | [**Customer Segmentation**](./customer_segmentation/) | Clustering · Unsupervised | K-Means, PCA, Silhouette Analysis, StandardScaler | `clustering` `retail` | **—** |
 
 <details>
 <summary><strong>📌 Planned / In Progress (Jupyter Notebooks)</strong></summary>
