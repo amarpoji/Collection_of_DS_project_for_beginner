@@ -45,12 +45,13 @@ I'm **amarpoji** — learning data science one project at a time. This repo is m
   Keep the table sorted by number (newest last, or group by category).
 -->
 
-| # | Project | Domain | Key Skills | Tags | F1 |
-|:-:|:--------|:------:|:-----------|:----:|:--:|
-| 1 | [**NLP with Disaster Tweets**](./NLP_with_disaster_tweet/) | NLP · Classification | TF-IDF, Logistic Regression, NLTK, GridSearchCV | `text` `kaggle` | **0.744** |
-| 2 | [**Spotify Song Recommender**](./spotify_song_recommender/) | Recommender Systems | cosine similarity, MinMaxScaler, audio features | `music` `huggingface` | **—** |
-| 3 | [**Sentiment Analysis on Twitter**](./sentiment_analysis/) | NLP · Classification | TF-IDF, Logistic Regression, Naive Bayes, NLTK, WordCloud | `text` `twitter` | **0.769** |
-| 4 | [**Customer Segmentation**](./customer_segmentation/) | Clustering · Unsupervised | K-Means, PCA, Silhouette Analysis, StandardScaler | `clustering` `retail` | **—** |
+| # | Project | Domain | Key Skills | Tags | 
+|:-:|:--------|:------:|:-----------|:----:|
+| 1 | [**NLP with Disaster Tweets**](./NLP_with_disaster_tweet/) | NLP · Classification | TF-IDF, Logistic Regression, NLTK, GridSearchCV | `text` `kaggle` | 
+| 2 | [**Spotify Song Recommender**](./spotify_song_recommender/) | Recommender Systems | cosine similarity, MinMaxScaler, audio features | `music` `huggingface` | 
+| 3 | [**Sentiment Analysis on Twitter**](./sentiment_analysis/) | NLP · Classification | TF-IDF, Logistic Regression, Naive Bayes, NLTK, WordCloud | `text` `twitter` | 
+| 4 | [**Customer Segmentation**](./customer_segmentation/) | Clustering · Unsupervised | K-Means, PCA, Silhouette Analysis, StandardScaler | `clustering` `retail` |
+| 5 | [**Stock Price Forecasting**](./stock_price_forecasting/) | Time Series · Regression | yfinance, Feature Engineering, XGBoost, ARIMA, Walk-Forward CV | `finance` `real-data` |
 
 <details>
 <summary><strong>📌 Planned / In Progress (Jupyter Notebooks)</strong></summary>
@@ -64,9 +65,8 @@ I'm **amarpoji** — learning data science one project at a time. This repo is m
 | 2 | **House Price Regression** | Regression | EDA, correlation, Ridge/Lasso, feature selection |
 | 3 | **Credit Card Fraud Detection** | Anomaly | imbalance handling, SMOTE, ROC-AUC, undersampling |
 | 4 | **Image Classifier (CIFAR-10)** | Computer Vision | CNNs, data augmentation, transfer learning, PyTorch/TF |
-| 5 | **Stock Price Forecasting** | Time Series | ARIMA, Prophet, LSTM, stationarity, rolling statistics |
-| 6 | **Movie Recommender System** | Recommender Systems | collaborative filtering, matrix factorisation, SVD |
-| 7 | **Chatbot with BERT** | NLP · Transformers | fine-tuning, Hugging Face, tokenisation, attention |
+| 5 | **Movie Recommender System** | Recommender Systems | collaborative filtering, matrix factorisation, SVD |
+| 6 | **Chatbot with BERT** | NLP · Transformers | fine-tuning, Hugging Face, tokenisation, attention |
 | 8 | **A/B Testing Analyzer** | Statistics | hypothesis testing, confidence intervals, power analysis |
 | 9 | **Model Interpretability (SHAP/LIME)** | XAI · MLOps | SHAP values, LIME, feature importance, model debugging |
 |10 | **Deploy ML Model as API** | MLOps | FastAPI, Docker, CI/CD, model serialisation |
