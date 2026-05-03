@@ -11,9 +11,7 @@ venv/
 dist/
 build/
 
-# Jupyter Notebook
-.ipynb_checkpoints
-*.ipynb
+
 
 # Data
 *.csv
