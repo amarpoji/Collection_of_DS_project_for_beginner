@@ -55,6 +55,7 @@ I'm **amarpoji** — learning data science one project at a time. This repo is m
 | 6 | [**Movie Recommender System**](./movie_recommender_system/) | Recommender Systems · Collaborative Filtering | SVD, kNN, Content-Based, MovieLens, Matrix Factorization | `recommender` `real-data` |
 | 7 | [**Time Series Anomaly Detection**](./time_series_anomaly_detection/) | Anomaly · Time Series | STL Decomposition, Isolation Forest, One-Class SVM, Autoencoder, NYC Taxi | `anomaly` `real-data` `deep-learning` |
 | 8 | [**Image Classifier (CIFAR-10)**](./image_classifier/) | Computer Vision | CNN, Data Augmentation, Transfer Learning, PyTorch/TF | `vision` `cifar10` `deep-learning` |
+| 9 | [**A/B Testing Analyzer**](./ab_testing_analyzer/) | Statistics | hypothesis testing, confidence intervals, z-test | `statistics` `ab-testing` `real-data` |
 
 <details>
 <summary><strong>📌 Planned / In Progress (Jupyter Notebooks)</strong></summary>
@@ -68,8 +69,7 @@ I'm **amarpoji** — learning data science one project at a time. This repo is m
 | 2 | **House Price Regression** | Regression | EDA, correlation, Ridge/Lasso, feature selection |
 | 3 | **Credit Card Fraud Detection** | Anomaly | imbalance handling, SMOTE, ROC-AUC, undersampling |
 | 4 | **Chatbot with BERT** | NLP · Transformers | fine-tuning, Hugging Face, tokenisation, attention |
-| 5 | **A/B Testing Analyzer** | Statistics | hypothesis testing, confidence intervals, power analysis |
-| 6 | **Model Interpretability (SHAP/LIME)** | XAI · MLOps | SHAP values, LIME, feature importance, model debugging |
+| 5 | **Model Interpretability (SHAP/LIME)** | XAI · MLOps | SHAP values, LIME, feature importance, model debugging |
 | 7 | **Deploy ML Model as API** | MLOps | FastAPI, Docker, CI/CD, model serialisation |
 | 8 | **Web Scraper + Topic Modeling** | NLP · Scraping | BeautifulSoup, LDA, NMF, text preprocessing |
 | 9 | **Fake News Detection** | NLP · Classification | word embeddings, LSTMs, attention, explainability |
