@@ -56,6 +56,7 @@ I'm **amarpoji** — learning data science one project at a time. This repo is m
 | 7 | [**Time Series Anomaly Detection**](./time_series_anomaly_detection/) | Anomaly · Time Series | STL Decomposition, Isolation Forest, One-Class SVM, Autoencoder, NYC Taxi | `anomaly` `real-data` `deep-learning` |
 | 8 | [**Image Classifier (CIFAR-10)**](./image_classifier/) | Computer Vision | CNN, Data Augmentation, Transfer Learning, PyTorch/TF | `vision` `cifar10` `deep-learning` |
 | 9 | [**A/B Testing Analyzer**](./ab_testing_analyzer/) | Statistics | hypothesis testing, confidence intervals, z-test | `statistics` `ab-testing` `real-data` |
+|10 | [**RAG Pipeline from Scratch**](./rag_pipeline/) | GenAI · RAG | chunking strategies, sentence embeddings, ChromaDB, cross-encoder reranking, T5 generation | `rag` `llm` `vector-db` `genai` |
 
 <details>
 <summary><strong>📌 Planned / In Progress (Jupyter Notebooks)</strong></summary>
@@ -65,31 +66,21 @@ I'm **amarpoji** — learning data science one project at a time. This repo is m
 
 | # | Project Idea | Domain | Skills Covered |
 |:-:|:-------------|:------:|:---------------|
-| 1 | **Titanic Survival Prediction** | Classification | pandas, feature engineering, ensemble, missing value imputation |
-| 2 | **House Price Regression** | Regression | EDA, correlation, Ridge/Lasso, feature selection |
-| 3 | **Credit Card Fraud Detection** | Anomaly | imbalance handling, SMOTE, ROC-AUC, undersampling |
-| 4 | **Chatbot with BERT** | NLP · Transformers | fine-tuning, Hugging Face, tokenisation, attention |
-| 5 | **Model Interpretability (SHAP/LIME)** | XAI · MLOps | SHAP values, LIME, feature importance, model debugging |
-| 7 | **Deploy ML Model as API** | MLOps | FastAPI, Docker, CI/CD, model serialisation |
-| 8 | **Web Scraper + Topic Modeling** | NLP · Scraping | BeautifulSoup, LDA, NMF, text preprocessing |
-| 9 | **Fake News Detection** | NLP · Classification | word embeddings, LSTMs, attention, explainability |
-|10 | **LLM Fine-tuning with LoRA** | Generative AI · LLMs | LoRA, PEFT, QLoRA, instruction tuning |
-|11 | **End-to-End MLOps Pipeline** | MLOps · DevOps | DVC, MLflow, feature store, model registry, monitoring |
-|12 | **Olympic Games 120 Years** | EDA · Sports | historical trends, medal counts, country analysis, storytelling |
-|13 | **Video Game Sales Analysis** | EDA · Gaming | genre trends, platform lifecycle, regional analysis, regression |
-|14 | **Breast Cancer Detection** | Medical · Classification | feature selection, SVM, confusion matrices, ROC curves |
-|15 | **WhatsApp Chat Analyzer** | NLP · Personal | emoji stats, sentiment over time, word clouds, message patterns |
-|16 | **Wine Quality Prediction** | Regression · Chemistry | chemical features, feature importance, model comparison |
-|17 | **Bike Sharing Demand** | Time Series · Regression | seasonality, weather impact, holiday effects, lag features |
-|18 | **Airbnb Price Prediction** | Regression · Geo | location encoding, amenities, price optimisation, outliers |
-|19 | **Netflix Content Analysis** | EDA · Media | content trends over years, country distribution, rating analysis |
-|20 | **Health Insurance Cost** | Regression · Healthcare | BMI analysis, smoker impact, region-wise costs, interaction terms |
-|21 | **Student Grades Predictor** | Classification · Education | demographic factors, study habits, feature engineering |
-|22 | **Market Basket Analysis** | Association Rules · Retail | Apriori algorithm, frequent itemsets, product placement insights |
-|23 | **Sleep Health & Lifestyle** | EDA · Health | sleep vs exercise, occupation effects, lifestyle correlations |
-|24 | **Global Terrorism Database** | EDA · Geopolitics | attack trends, target analysis, casualty patterns, mapping |
-|25 | **Pokemon Battle Predictor** | Classification · Fun | type advantages, stats analysis, team building, visualisations |
-|26 | **Star Type Classification** | Astronomy · Physics | spectral analysis, HR diagram, magnitude vs temperature |
+| 1 | **RAG Pipeline from Scratch** | GenAI · RAG | chunking strategies, vector DBs (Chroma/Qdrant), embedding models, retrieval fusion, reranking, eval |
+| 2 | **Multi-Agent LLM System** | GenAI · Agents | LangGraph/AutoGen, agent orchestration, tool use, memory, reflection, observability |
+| 3 | **Graph Neural Networks for Molecules** | GNNs · Chemistry | PyTorch Geometric, message passing, SMILES parsing, molecular property prediction |
+| 4 | **Self-Supervised Learning (SimCLR)** | CV · SSL | contrastive learning, data augmentations, NT-Xent loss, projection head, representation quality |
+| 5 | **Diffusion Model for Image Gen** | CV · Generative | DDPM, U-Net, noise scheduling, classifier-free guidance, FID score |
+| 6 | **RLHF from Scratch** | RL · Alignment | PPO, reward modeling, preference datasets, KL divergence, DPO comparison |
+| 7 | **Multimodal Search with CLIP** | Multimodal · Retrieval | CLIP embeddings, cross-modal retrieval, FAISS, zero-shot classification |
+| 8 | **Causal Inference & Uplift Modeling** | Causal · Stats | DoWhy, DAGs, ATE/CATE, uplift trees, A/B test debiasing |
+| 9 | **Federated Learning for Healthcare** | FL · Privacy | Flower framework, differential privacy, heterogeneous data, secure aggregation |
+|10 | **Knowledge Graph Construction** | KG · NLP | NER, relation extraction, Neo4j, SPARQL queries, graph embeddings |
+|11 | **Bayesian Deep Learning** | Uncertainty · Prob | MC Dropout, Bayesian NN, VI, uncertainty quantification, active learning |
+|12 | **Neural Architecture Search** | AutoML · NAS | evolutionary search, weight sharing, DARTS, hardware-aware NAS |
+|13 | **Anomaly Detection on Graphs** | Graph · Security | PyG, graph autoencoders, GAD benchmark, fraud detection on transaction graphs |
+|14 | **Code Generation with RAG** | GenAI · Code | code LLMs, semantic code retrieval, function calling, AST parsing |
+|15 | **Time Series Foundation Model** | TS · Foundation | Lag-Llama/TimesFM, zero-shot forecasting, patch embeddings, distribution head |
 
 > *Open an issue or PR if you'd like to collaborate on any of these!*
 

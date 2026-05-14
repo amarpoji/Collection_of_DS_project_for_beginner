@@ -1,0 +1,645 @@
+[
+  {"type":"spacer","pt":6},
+
+  {"type":"h1","text":"Table of Contents"},
+  {"type":"body","text":"<b>Chapter 1</b>  What is RAG? ................................................................................................... 3"},
+  {"type":"body","text":"<b>Chapter 2</b>  The Problem RAG Solves ................................................................................... 5"},
+  {"type":"body","text":"<b>Chapter 3</b>  Embeddings — The Foundation .......................................................................... 7"},
+  {"type":"body","text":"<b>Chapter 4</b>  Chunking Strategies .......................................................................................... 9"},
+  {"type":"body","text":"<b>Chapter 5</b>  Vector Databases ............................................................................................ 11"},
+  {"type":"body","text":"<b>Chapter 6</b>  Retrieval & Semantic Search ............................................................................ 13"},
+  {"type":"body","text":"<b>Chapter 7</b>  The Complete RAG Pipeline ............................................................................ 15"},
+  {"type":"body","text":"<b>Chapter 8</b>  Building a RAG System in Python .................................................................... 17"},
+  {"type":"body","text":"<b>Chapter 9</b>  Advanced RAG Patterns ................................................................................... 20"},
+  {"type":"body","text":"<b>Chapter 10</b> Production Considerations .............................................................................. 23"},
+  {"type":"body","text":"<b>Appendix</b>  References & Further Reading ........................................................................ 25"},
+
+  {"type":"pagebreak"},
+
+  {"type":"h1","text":"Chapter 1: What is RAG?"},
+  {"type":"body","text":"Retrieval-Augmented Generation, or <b>RAG</b>, is an architectural pattern that enhances large language models (LLMs) by connecting them to external knowledge sources. Instead of relying solely on what the model learned during training, RAG lets the model <i>look up</i> relevant information before generating a response."},
+  {"type":"body","text":"Think of it like giving a student an open-book exam. Without RAG, the student must answer from memory alone (closed-book). With RAG, the student can search through reference materials and then compose an answer using both the retrieved facts and their own reasoning ability."},
+
+  {"type":"h2","text":"Why RAG Matters"},
+  {"type":"bullet","text":"LLMs have a fixed knowledge cutoff — they don't know about recent events"},
+  {"type":"bullet","text":"LLMs can hallucinate — they make up plausible-sounding but incorrect information"},
+  {"type":"bullet","text":"LLMs cannot access proprietary or private data by default"},
+  {"type":"bullet","text":"RAG is <b>cost-effective</b> — no need to retrain or fine-tune the model"},
+  {"type":"bullet","text":"RAG provides <b>attribution</b> — you can cite the source documents used"},
+  {"type":"bullet","text":"RAG is <b>updatable</b> — swap in new data without touching the model"},
+
+  {"type":"callout","text":"RAG combines the best of two worlds: retrieval (searching for factual information) and generation (composing coherent responses). The retrieval grounds the generation in reality."},
+
+  {"type":"h2","text":"The Core Idea"},
+  {"type":"body","text":"A RAG system has three main components that work together in sequence:"},
+  {"type":"numbered","text":"<b>Ingest</b> — Documents are processed, split into chunks, converted to embeddings, and stored in a vector database"},
+  {"type":"numbered","text":"<b>Retrieve</b> — When a user asks a question, it is converted to the same embedding space, and the system searches for the most relevant document chunks"},
+  {"type":"numbered","text":"<b>Generate</b> — The retrieved chunks are injected into the LLM's prompt as context, and the LLM generates a grounded response"},
+
+  {"type":"h2","text":"RAG at a Glance"},
+  {"type":"flowchart",
+    "nodes": [
+      {"id":"user",    "label":"User Query",           "shape":"parallelogram"},
+      {"id":"embed",   "label":"Embed Query",           "shape":"rect"},
+      {"id":"search",  "label":"Vector Search",         "shape":"rect"},
+      {"id":"retrieve","label":"Retrieve Chunks",       "shape":"parallelogram"},
+      {"id":"context", "label":"Inject into Prompt",    "shape":"rect"},
+      {"id":"llm",     "label":"LLM Generates",          "shape":"rect"},
+      {"id":"answer",  "label":"Grounded Answer",        "shape":"parallelogram"}
+    ],
+    "edges": [
+      {"from":"user", "to":"embed"},
+      {"from":"embed","to":"search"},
+      {"from":"search","to":"retrieve"},
+      {"from":"retrieve","to":"context"},
+      {"from":"context","to":"llm"},
+      {"from":"llm","to":"answer"}
+    ],
+    "caption":"High-level RAG Pipeline — from query to grounded answer"
+  },
+
+  {"type":"h2","text":"Key Terminology"},
+  {"type":"table",
+    "headers": ["Term", "Definition", "Analogy"],
+    "rows": [
+      ["Embedding", "A numerical vector (list of numbers) that captures the meaning of text", "A fingerprint for meaning"],
+      ["Vector Database", "A database optimized for storing and searching embeddings", "A library organized by topic, not title"],
+      ["Chunking", "Splitting documents into smaller pieces", "Cutting a book into paragraphs"],
+      ["Semantic Search", "Searching by meaning rather than exact keywords", "Finding books about 'growing food' vs. searching for 'farming'"],
+      ["ANN", "Approximate Nearest Neighbor — fast approximate search", "Finding a close match without checking every item"],
+      ["Context Injection", "Adding retrieved text to the LLM prompt", "Giving the student reference notes"]
+    ]
+  },
+
+  {"type":"h2","text":"Key Takeaways"},
+  {"type":"bullet","text":"RAG is an architecture, not a model — it can be added to any LLM"},
+  {"type":"bullet","text":"RAG grounds LLM responses in factual, retrievable data"},
+  {"type":"bullet","text":"RAG reduces hallucinations, enables citations, and keeps knowledge fresh"},
+  {"type":"bullet","text":"The three pillars are: ingest, retrieve, generate"},
+
+  {"type":"spacer","pt":4},
+  {"type":"callout","text":"<b>Mini Summary:</b> RAG = Search + Read + Write. The system searches for relevant documents, reads them for context, and writes a grounded response."},
+
+  {"type":"pagebreak"},
+
+  {"type":"h1","text":"Chapter 2: The Problem RAG Solves"},
+  {"type":"body","text":"Before understanding why RAG is revolutionary, we must understand the fundamental limitations of large language models. LLMs are remarkable, but they have three critical weaknesses that RAG directly addresses."},
+
+  {"type":"h2","text":"The Knowledge Cutoff Problem"},
+  {"type":"body","text":"Every LLM is trained on a snapshot of data collected up to a specific date. For example, GPT-4's training data cuts off in April 2023. If you ask it about an event from last week, it literally cannot know the answer — it was never trained on that information."},
+  {"type":"body","text":"Think of it like a encyclopedia published in 2020. It's excellent for historical facts, but useless for current events. RAG solves this by giving the model access to up-to-date external data."},
+
+  {"type":"h2","text":"The Hallucination Problem"},
+  {"type":"body","text":"LLMs are designed to generate plausible-sounding text, not to be factually correct. When they don't know an answer, they often <i>confabulate</i> — they make something up that sounds convincing. This is called <b>hallucination</b>."},
+  {"type":"body","text":"In high-stakes domains like medicine, law, or finance, hallucinations are unacceptable. RAG mitigates this by providing factual context that constrains the model's output."},
+
+  {"type":"h2","text":"The Data Isolation Problem"},
+  {"type":"body","text":"Organizations have vast amounts of private data — internal documentation, customer records, proprietary research — that no public LLM can access. Fine-tuning on this data is expensive, slow, and requires ML expertise."},
+  {"type":"body","text":"RAG provides a practical alternative: keep your data in a vector database, retrieve what's relevant at query time, and never expose the underlying data to the model during training."},
+
+  {"type":"h2","text":"Comparison: Without RAG vs. With RAG"},
+  {"type":"table",
+    "headers": ["Scenario", "Without RAG", "With RAG"],
+    "rows": [
+      ["Ask about latest product launch", "I don't have information about that (cutoff)", "Retrieves launch docs and summarizes accurately"],
+      ["Ask about internal HR policy", "I can't access internal data (or hallucinates)", "Retrieves policy PDF and answers correctly"],
+      ["Ask for a medical recommendation", "Generates plausible but possibly wrong answer", "Retrieves latest medical guidelines and cites them"],
+      ["Ask with sources", "No sources to cite", "Returns answer + source document excerpts"]
+    ]
+  },
+
+  {"type":"h2","text":"When NOT to Use RAG"},
+  {"type":"bullet","text":"When you need <b>real-time</b> responses with zero added latency"},
+  {"type":"bullet","text":"When your queries never require external or up-to-date knowledge"},
+  {"type":"bullet","text":"When you have <b>highly structured</b> data better served by traditional databases"},
+  {"type":"bullet","text":"When the retrieval step itself is too costly for your use case"},
+
+  {"type":"spacer","pt":4},
+  {"type":"callout","text":"<b>Engineering Insight:</b> RAG introduces a latency trade-off. Each retrieval adds 100-500ms, but the quality improvement is often dramatic. In practice, the retrieval latency is usually unnoticeable to end users."},
+
+  {"type":"h2","text":"Key Takeaways"},
+  {"type":"bullet","text":"RAG addresses three fundamental LLM weaknesses: knowledge cutoff, hallucinations, and data isolation"},
+  {"type":"bullet","text":"RAG is the most practical way to give LLMs access to private or real-time data"},
+  {"type":"bullet","text":"RAG adds some latency but dramatically improves factual accuracy"},
+
+  {"type":"pagebreak"},
+
+  {"type":"h1","text":"Chapter 3: Embeddings — The Foundation"},
+  {"type":"body","text":"Embeddings are the mathematical backbone of every RAG system. To understand RAG, you must first understand what an embedding is and how it captures meaning."},
+
+  {"type":"h2","text":"What is an Embedding?"},
+  {"type":"body","text":"An <b>embedding</b> is a dense vector (a list of numbers) that represents the <i>semantic meaning</i> of a piece of text. Unlike traditional keyword-based approaches, embeddings capture meaning, context, and relationships between words and concepts."},
+  {"type":"body","text":"Think of it like GPS coordinates for meaning. Just as (40.7128, -74.0060) uniquely identifies New York City, an embedding vector like [0.23, -0.45, 0.89, ...] uniquely identifies the <i>meaning</i> of a sentence. Similar sentences have similar coordinates."},
+
+  {"type":"h2","text":"How Embeddings Capture Meaning"},
+  {"type":"body","text":"Modern embedding models (like <b>text-embedding-3-small</b> or <b>all-MiniLM-L6-v2</b>) are trained on massive text corpora. During training, the model learns to position semantically similar texts close together in vector space and dissimilar texts far apart."},
+  {"type":"body","text":"The key insight: <b>distance in vector space = difference in meaning</b>. Two sentences about cats will have vectors that are close together (small distance), while a sentence about cats and one about quantum physics will be far apart (large distance)."},
+
+  {"type":"h2","text":"Visualizing Vector Space"},
+  {"type":"body","text":"While real embeddings have 384 to 3072 dimensions, we can visualize the concept in 2D. Clusters of related concepts form naturally:"},
+  {"type":"body","text":"<i>In this simplified 2D projection of an embedding space, notice how \"dog\", \"puppy\", and \"canine\" cluster together near the bottom-left, while \"car\", \"truck\", and \"vehicle\" form their own cluster upper-right. The distance between clusters reflects semantic difference.</i>"},
+
+  {"type":"h2","text":"Common Embedding Models"},
+  {"type":"table",
+    "headers": ["Model", "Dimensions", "Context Length", "Use Case"],
+    "rows": [
+      ["text-embedding-3-small", "1536", "8191 tokens", "General purpose, cost-effective"],
+      ["text-embedding-3-large", "3072", "8191 tokens", "High precision, enterprise"],
+      ["all-MiniLM-L6-v2", "384", "256 tokens", "Fast, local, open-source"],
+      ["BAAI/bge-base-en-v1.5", "768", "512 tokens", "Balanced performance"],
+      ["intfloat/e5-mistral-7b-instruct", "4096", "4096 tokens", "State-of-the-art accuracy"]
+    ]
+  },
+
+  {"type":"callout","text":"<b>Important:</b> The input text and the query must use the <i>same</i> embedding model to produce compatible vectors. Always use the same embedding model for indexing and retrieval."},
+
+  {"type":"h2","text":"Key Takeaways"},
+  {"type":"bullet","text":"Embeddings are numerical vectors that capture semantic meaning"},
+  {"type":"bullet","text":"Similar meanings = similar vectors (close together in vector space)"},
+  {"type":"bullet","text":"Embedding dimension ranges from 384 to 3072 depending on the model"},
+  {"type":"bullet","text":"The same embedding model must be used for both indexing and retrieval"},
+  {"type":"bullet","text":"Open-source models (MiniLM, BGE, E5) make local RAG systems practical"},
+
+  {"type":"pagebreak"},
+
+  {"type":"h1","text":"Chapter 4: Chunking Strategies"},
+  {"type":"body","text":"Before documents can be searched, they must be split into manageable pieces called <b>chunks</b>. Chunking seems simple — just split text — but the strategy you choose dramatically impacts retrieval quality."},
+
+  {"type":"h2","text":"Why Chunking Matters"},
+  {"type":"body","text":"Think of chunking as deciding the <i>granularity</i> of your knowledge base. Too large, and each chunk contains multiple topics — the embedding becomes muddled. Too small, and individual chunks lack sufficient context to be useful."},
+  {"type":"body","text":"The goal is to create chunks that are <b>semantically self-contained</b> — each chunk should express one complete idea or piece of information."},
+
+  {"type":"h2","text":"Chunking Approaches Compared"},
+  {"type":"table",
+    "headers": ["Strategy", "How It Works", "Best For", "Downside"],
+    "rows": [
+      ["Fixed Size", "Split every N characters/tokens with optional overlap", "Simple documents, logs", "May cut sentences in half"],
+      ["Recursive Character", "Split on natural boundaries (\\n\\n → \\n → . → ! → ?)", "General text, articles", "No semantic awareness"],
+      ["Semantic Chunking", "Use embeddings to detect topic boundaries", "Complex documents", "Slower, more expensive"],
+      ["Document-Based", "Use document structure (sections, paragraphs)", "PDFs, Markdown, HTML", "Requires structured input"],
+      ["Agentic Chunking", "LLM decides where to split", "High-value documents", "Slowest, most expensive"]
+    ]
+  },
+
+  {"type":"h2","text":"The Overlap Trick"},
+  {"type":"body","text":"A simple but effective technique: when chunking, overlap consecutive chunks by 10-20%. This ensures that information near chunk boundaries isn't lost:"},
+  {"type":"body","text":"<i>Chunk 1: [The cat sat on the mat. The mat was]</i>"},
+  {"type":"body","text":"<i>Chunk 2: [The mat was old and worn. The cat purred.]</i>"},
+  {"type":"body","text":"The overlapping phrase \"The mat was\" ensures both chunks carry context across the boundary."},
+
+  {"type":"h2","text":"Chunk Size Trade-offs"},
+  {"type":"flowchart",
+    "nodes": [
+      {"id":"start",   "label":"Choose Chunk Size",       "shape":"diamond"},
+      {"id":"small",    "label":"Small Chunks (128-256)",  "shape":"rect"},
+      {"id":"large",    "label":"Large Chunks (512-1024)", "shape":"rect"},
+      {"id":"precise",  "label":"High Precision",          "shape":"parallelogram"},
+      {"id":"context",  "label":"Rich Context",            "shape":"parallelogram"},
+      {"id":"miss",     "label":"May Miss Broader Context","shape":"rect"},
+      {"id":"noise",    "label":"May Include Irrelevant","shape":"rect"}
+    ],
+    "edges": [
+      {"from":"start","to":"small"},
+      {"from":"start","to":"large"},
+      {"from":"small","to":"precise"},
+      {"from":"small","to":"miss"},
+      {"from":"large","to":"context"},
+      {"from":"large","to":"noise"}
+    ],
+    "caption":"The trade-off between chunk size, precision, and context richness"
+  },
+
+  {"type":"h2","text":"Practical Guidelines"},
+  {"type":"bullet","text":"<b>Start with 512 tokens</b> — this is a well-balanced default for most use cases"},
+  {"type":"bullet","text":"Use <b>10-20% overlap</b> to avoid information loss at boundaries"},
+  {"type":"bullet","text":"Chunk at <b>semantic boundaries</b> (paragraphs, sections) not arbitrary token counts"},
+  {"type":"bullet","text":"For Q&A, aim for chunks that each contain <b>one question-answerable fact</b>"},
+  {"type":"bullet","text":"<b>Test different chunk sizes</b> — there is no universally correct value"},
+
+  {"type":"callout","text":"<b>Production Tip:</b> Use LangChain's RecursiveCharacterTextSplitter as your starting point. It splits on natural delimiters (double newline → single newline → sentence end) and automatically handles overlap."},
+
+  {"type":"h2","text":"Key Takeaways"},
+  {"type":"bullet","text":"Chunking determines the granularity of your knowledge base"},
+  {"type":"bullet","text":"512 tokens with 20% overlap is a strong default"},
+  {"type":"bullet","text":"Chunk at natural semantic boundaries, not arbitrary positions"},
+  {"type":"bullet","text":"Overlap prevents information loss at chunk boundaries"},
+  {"type":"bullet","text":"Different document types may need different chunking strategies"},
+
+  {"type":"pagebreak"},
+
+  {"type":"h1","text":"Chapter 5: Vector Databases"},
+  {"type":"body","text":"Once you have converted documents into embedding vectors, you need a place to store them — and more importantly, a way to search them by similarity. This is what <b>vector databases</b> do."},
+
+  {"type":"h2","text":"What Makes Vector Databases Special?"},
+  {"type":"body","text":"Traditional databases (PostgreSQL, MySQL) are optimized for <b>exact matches</b> — they find rows where a column equals a specific value. Vector databases are optimized for <b>similarity search</b> — they find vectors closest to a given query vector."},
+  {"type":"body","text":"Think of it like the difference between a library catalog (traditional DB) and a friend who knows your taste (vector DB). The catalog tells you exactly where a specific book is. Your friend says, \"Based on what you liked before, you'll probably enjoy these.\""},
+
+  {"type":"h2","text":"Popular Vector Databases Compared"},
+  {"type":"table",
+    "headers": ["Database", "Type", "Search Algorithm", "Best For"],
+    "rows": [
+      ["ChromaDB", "Embedded (Python)", "Flat + HNSW", "Prototyping, small-medium projects"],
+      ["FAISS", "Library (not a DB)", "Multiple (IVF, HNSW)", "High-performance, research"],
+      ["Pinecone", "Managed Cloud", "HNSW (proprietary)", "Enterprise, production"],
+      ["Weaviate", "Standalone Server", "HNSW + custom", "Full-featured, hybrid search"],
+      ["Qdrant", "Standalone Server", "HNSW", "Rust-based, high throughput"],
+      ["Milvus", "Distributed", "Multiple (IVF, HNSW, DiskANN)", "Large-scale, sharded"],
+      ["pgvector", "PostgreSQL Extension", "IVFFlat, HNSW", "PostgreSQL users, hybrid"]
+    ]
+  },
+
+  {"type":"h2","text":"How Vector Search Works"},
+  {"type":"body","text":"Behind the scenes, vector databases use specialized index structures to enable fast similarity search. The most common approach is <b>HNSW</b> (Hierarchical Navigable Small World):"},
+  {"type":"numbered","text":"Vectors are stored in a graph structure organized by layers"},
+  {"type":"numbered","text":"The top layer has few nodes (long-range connections)"},
+  {"type":"numbered","text":"Lower layers have more nodes (fine-grained connections)"},
+  {"type":"numbered","text":"Search starts at the top layer and descends — like taking a highway then local roads"},
+  {"type":"numbered","text":"This achieves O(log n) search complexity — millions of vectors searched in milliseconds"},
+
+  {"type":"h2","text":"Distance Metrics"},
+  {"type":"table",
+    "headers": ["Metric", "Formula", "When to Use"],
+    "rows": [
+      ["Cosine Similarity", "cos(A,B) = A·B / |A|·|B|", "Semantic similarity (most common)"],
+      ["Euclidean (L2)", "d = √Σ(Aᵢ-Bᵢ)²", "Dense embeddings, spatial data"],
+      ["Dot Product", "d = ΣAᵢ·Bᵢ", "When vectors are normalized"]
+    ]
+  },
+
+  {"type":"callout","text":"<b>Important:</b> Most modern embedding models produce normalized vectors. For normalized vectors, cosine similarity and dot product produce the same ranking. Check your embedding model's documentation."},
+
+  {"type":"h2","text":"Key Takeaways"},
+  {"type":"bullet","text":"Vector databases enable similarity search over embeddings"},
+  {"type":"bullet","text":"HNSW is the most widely used indexing algorithm for vector search"},
+  {"type":"bullet","text":"ChromaDB and FAISS are excellent choices for getting started locally"},
+  {"type":"bullet","text":"Distance metrics matter — cosine similarity is the default for semantic search"},
+  {"type":"bullet","text":"For production, consider managed services (Pinecone) or full-featured engines (Weaviate, Qdrant)"},
+
+  {"type":"pagebreak"},
+
+  {"type":"h1","text":"Chapter 6: Retrieval & Semantic Search"},
+  {"type":"body","text":"Retrieval is the heart of any RAG system. It determines <i>which</i> pieces of information the LLM will see. A good retrieval system finds the right context; a bad one feeds irrelevant noise."},
+
+  {"type":"h2","text":"Semantic Search vs. Keyword Search"},
+  {"type":"body","text":"Traditional <b>keyword search</b> (like grep or SQL LIKE) looks for exact word matches. If you search for \"canine\", you won't find documents mentioning \"dog\". <b>Semantic search</b> understands meaning — it finds \"dog\" documents even when you search for \"canine\"."},
+  {"type":"body","text":"Think of keyword search as a jigsaw puzzle — you need the exact piece. Semantic search is like a magnet — it pulls in all nearby pieces regardless of their shape."},
+
+  {"type":"h2","text":"ANN Search: Speed vs. Accuracy"},
+  {"type":"body","text":"<b>Approximate Nearest Neighbor (ANN)</b> search is the technique behind all modern vector databases. Instead of measuring distance to every single vector (which would be O(n) and prohibitively slow for millions of vectors), ANN uses smart indexing to find approximate neighbors in O(log n) time."},
+  {"type":"body","text":"The trade-off: ANN is <i>approximate</i>, not exact. You might miss the true nearest neighbor, but you'll find one that's close enough — and you'll do it 100-1000x faster."},
+
+  {"type":"h2","text":"Retrieval Quality Metrics"},
+  {"type":"table",
+    "headers": ["Metric", "What It Measures", "Target"],
+    "rows": [
+      ["Precision@K", "Of top-K results, how many are relevant?", "> 0.8"],
+      ["Recall@K", "Of all relevant documents, how many are in top-K?", "> 0.7"],
+      ["MRR", "Mean Reciprocal Rank — how early is the first relevant result?", "> 0.9"],
+      ["NDCG@K", "Normalized Discounted Cumulative Gain — ranking quality", "> 0.8"]
+    ]
+  },
+
+  {"type":"h2","text":"Hybrid Search: Best of Both Worlds"},
+  {"type":"body","text":"<b>Hybrid search</b> combines semantic search (embedding similarity) with keyword search (BM25) and fuses the results. This catches cases where exact keyword matches matter (like product codes or names) while still benefiting from semantic understanding."},
+  {"type":"body","text":"The fusion is typically done with <b>Reciprocal Rank Fusion (RRF)</b>, which combines rankings from multiple sources:"},
+  {"type":"body","text":"RRF score = 1/(60 + rank_semantic) + 1/(60 + rank_keyword)"},
+
+  {"type":"h2","text":"The Retrieval Flow"},
+  {"type":"flowchart",
+    "nodes": [
+      {"id":"query",   "label":"User Query",           "shape":"parallelogram"},
+      {"id":"qembed",  "label":"Embed Query",           "shape":"rect"},
+      {"id":"sem",     "label":"Semantic Search",       "shape":"rect"},
+      {"id":"kw",      "label":"Keyword Search (BM25)", "shape":"rect"},
+      {"id":"rrf",     "label":"RRF Fusion",           "shape":"rect"},
+      {"id":"rerank",  "label":"Rerank Results",        "shape":"rect"},
+      {"id":"result",  "label":"Final Context",         "shape":"parallelogram"}
+    ],
+    "edges": [
+      {"from":"query","to":"qembed"},
+      {"from":"qembed","to":"sem"},
+      {"from":"query","to":"kw"},
+      {"from":"sem","to":"rrf"},
+      {"from":"kw","to":"rrf"},
+      {"from":"rrf","to":"rerank"},
+      {"from":"rerank","to":"result"}
+    ],
+    "caption":"Hybrid retrieval pipeline combining semantic and keyword search with RRF fusion"
+  },
+
+  {"type":"callout","text":"<b>Production Tip:</b> A reranker step (also called a cross-encoder) re-scores the top 20-50 results with a more accurate model. This dramatically improves precision at the cost of a small latency increase. Use models like BAAI/bge-reranker-v2-m3."},
+
+  {"type":"h2","text":"Key Takeaways"},
+  {"type":"bullet","text":"Semantic search finds by meaning, keyword search finds by exact match"},
+  {"type":"bullet","text":"ANN makes vector search practical at scale (O(log n) vs. O(n))"},
+  {"type":"bullet","text":"Hybrid search (semantic + BM25 + RRF) is more robust than either alone"},
+  {"type":"bullet","text":"A reranker step before the LLM significantly improves final quality"},
+  {"type":"bullet","text":"Measure retrieval quality with Precision@K and Recall@K"},
+
+  {"type":"pagebreak"},
+
+  {"type":"h1","text":"Chapter 7: The Complete RAG Pipeline"},
+  {"type":"body","text":"Now that we understand each component, let's assemble the complete RAG pipeline — from raw documents to grounded answers. This chapter shows the full system architecture and data flow."},
+
+  {"type":"h2","text":"The Two Phases"},
+  {"type":"body","text":"Every RAG system operates in two distinct phases:"},
+  {"type":"bullet","text":"<b>Indexing Phase (offline):</b> Process and store documents for future retrieval"},
+  {"type":"bullet","text":"<b>Query Phase (online/real-time):</b> Retrieve relevant context and generate answers"},
+
+  {"type":"h2","text":"Phase 1: Indexing (Offline)"},
+  {"type":"flowchart",
+    "nodes": [
+      {"id":"docs",    "label":"Raw Documents",      "shape":"parallelogram"},
+      {"id":"loader",  "label":"Document Loader",     "shape":"rect"},
+      {"id":"chunk",   "label":"Split into Chunks",   "shape":"rect"},
+      {"id":"embed",   "label":"Generate Embeddings",  "shape":"rect"},
+      {"id":"store",   "label":"Store in Vector DB",   "shape":"parallelogram"}
+    ],
+    "edges": [
+      {"from":"docs","to":"loader"},
+      {"from":"loader","to":"chunk"},
+      {"from":"chunk","to":"embed"},
+      {"from":"embed","to":"store"}
+    ],
+    "caption":"Indexing Phase — preparing documents for search"
+  },
+
+  {"type":"h2","text":"Phase 2: Query (Online)"},
+  {"type":"flowchart",
+    "nodes": [
+      {"id":"q",       "label":"User Question",       "shape":"parallelogram"},
+      {"id":"qe",      "label":"Embed Query",          "shape":"rect"},
+      {"id":"vs",      "label":"Vector Search",        "shape":"rect"},
+      {"id":"ret",     "label":"Retrieve Top-K",       "shape":"rect"},
+      {"id":"prompt",  "label":"Build Augmented Prompt","shape":"rect"},
+      {"id":"llm",     "label":"LLM Generates Answer",  "shape":"rect"},
+      {"id":"resp",    "label":"Grounded Response",     "shape":"parallelogram"}
+    ],
+    "edges": [
+      {"from":"q","to":"qe"},
+      {"from":"qe","to":"vs"},
+      {"from":"vs","to":"ret"},
+      {"from":"ret","to":"prompt"},
+      {"from":"prompt","to":"llm"},
+      {"from":"llm","to":"resp"}
+    ],
+    "caption":"Query Phase — retrieving context and generating answers"
+  },
+
+  {"type":"h2","text":"End-to-End Architecture"},
+  {"type":"body","text":"Here is the complete system architecture showing how a production RAG system fits together:"},
+
+  {"type":"h2","text":"The Augmented Prompt"},
+  {"type":"body","text":"The key innovation in RAG is how retrieved context is injected into the prompt. A typical augmented prompt looks like this:"},
+  {"type":"code", "language":"text",
+    "text":"SYSTEM: You are a helpful assistant. Use the following context\nto answer the user's question. If you cannot find the answer\nin the context, say so — do not make up information.\n\nCONTEXT:\n---\n[Document 1]: The Python garbage collector uses reference\ncounting and a cycle detector.\n---\n[Document 2]: Memory management in Python is automatic.\nObjects are deallocated when their reference count reaches zero.\n---\n[Document 3]: The gc module provides control over the\ncyclic garbage collector.\n---\n\nUSER: How does Python handle memory management?\n\nASSISTANT:"},
+
+  {"type":"callout","text":"<b>Important:</b> Always instruct the LLM to refuse answering if the context doesn't contain relevant information. This prevents the model from falling back on its training data and potentially hallucinating."},
+
+  {"type":"h2","text":"Key Takeaways"},
+  {"type":"bullet","text":"RAG has two phases: Indexing (offline) and Query (online)"},
+  {"type":"bullet","text":"The indexing pipeline: Load → Split → Embed → Store"},
+  {"type":"bullet","text":"The query pipeline: Embed query → Search → Retrieve → Augment prompt → Generate"},
+  {"type":"bullet","text":"The augmented prompt contains retrieved context + the original question"},
+  {"type":"bullet","text":"Always instruct the LLM to only answer from the provided context"},
+
+  {"type":"pagebreak"},
+
+  {"type":"h1","text":"Chapter 8: Building a RAG System in Python"},
+  {"type":"body","text":"In this chapter, we'll build a complete RAG system step by step using Python. We'll use <b>LangChain</b> for orchestration, <b>ChromaDB</b> for the vector store, and open-source embedding models."},
+
+  {"type":"h2","text":"Setup & Installation"},
+  {"type":"code", "language":"python",
+    "text":"pip install langchain langchain-community langchain-chroma\npip install chromadb sentence-transformers pypdf"},
+
+  {"type":"h2","text":"Step 1: Load a PDF Document"},
+  {"type":"code", "language":"python",
+    "text":"from langchain_community.document_loaders import PyPDFLoader\n\nloader = PyPDFLoader(\"handbook.pdf\")\ndocuments = loader.load()\nprint(f\"Loaded {len(documents)} pages\")"},
+
+  {"type":"h2","text":"Step 2: Split into Chunks"},
+  {"type":"code", "language":"python",
+    "text":"from langchain.text_splitter import RecursiveCharacterTextSplitter\n\nsplitter = RecursiveCharacterTextSplitter(\n    chunk_size=512,\n    chunk_overlap=64,\n    separators=[\"\\n\\n\", \"\\n\", \".\", \"!\", \"?\"],\n    length_function=len,\n)\n\nchunks = splitter.split_documents(documents)\nprint(f\"Created {len(chunks)} chunks\")"},
+
+  {"type":"h2","text":"Step 3: Create Embeddings & Vector Store"},
+  {"type":"code", "language":"python",
+    "text":"from langchain_chroma import Chroma\nfrom langchain_community.embeddings import HuggingFaceEmbeddings\n\nembeddings = HuggingFaceEmbeddings(\n    model_name=\"all-MiniLM-L6-v2\",\n    model_kwargs={\"device\": \"cpu\"},\n    encode_kwargs={\"normalize_embeddings\": True},\n)\n\nvectorstore = Chroma.from_documents(\n    documents=chunks,\n    embedding=embeddings,\n    persist_directory=\"./chroma_db\",\n)\n\nprint(f\"Stored {vectorstore._collection.count()} vectors\")"},
+
+  {"type":"h2","text":"Step 4: Set Up the Retriever"},
+  {"type":"code", "language":"python",
+    "text":"retriever = vectorstore.as_retriever(\n    search_type=\"similarity\",\n    search_kwargs={\"k\": 4},\n)"},
+
+  {"type":"h2","text":"Step 5: Create the RAG Chain"},
+  {"type":"code", "language":"python",
+    "text":"from langchain_core.prompts import ChatPromptTemplate\nfrom langchain_core.runnables import RunnablePassthrough\nfrom langchain_openai import ChatOpenAI\n\ntemplate = \"\"\"You are a helpful assistant. Answer using only\nthe provided context. If the context lacks the information,\nsay you don't know.\n\nContext:\n{context}\n\nQuestion: {question}\nAnswer:\"\"\"\n\nprompt = ChatPromptTemplate.from_template(template)\nllm = ChatOpenAI(model=\"gpt-4o-mini\", temperature=0)\n\ndef format_docs(docs):\n    return \"\\n\\n\".join(d.page_content for d in docs)\n\nrag_chain = (\n    {\"context\": retriever | format_docs,\n     \"question\": RunnablePassthrough()}\n    | prompt\n    | llm\n)"},
+
+  {"type":"h2","text":"Step 6: Ask Questions!"},
+  {"type":"code", "language":"python",
+    "text":"result = rag_chain.invoke(\n    \"What is the company policy on remote work?\"\n)\nprint(result.content)"},
+
+  {"type":"h2","text":"Full Working Example with FAISS"},
+  {"type":"code", "language":"python",
+    "text":"from langchain_community.vectorstores import FAISS\nfrom langchain_community.document_loaders import TextLoader\nfrom langchain.text_splitter import CharacterTextSplitter\nfrom langchain_community.embeddings import HuggingFaceEmbeddings\nfrom langchain_openai import ChatOpenAI\nfrom langchain.chains import RetrievalQA\n\nloader = TextLoader(\"knowledge_base.txt\")\ndocs = loader.load()\n\ntext_splitter = CharacterTextSplitter(\n    chunk_size=500, chunk_overlap=50\n)\nchunks = text_splitter.split_documents(docs)\n\nembeddings = HuggingFaceEmbeddings(\n    model_name=\"all-MiniLM-L6-v2\"\n)\n\nvectorstore = FAISS.from_documents(chunks, embeddings)\n\nqa = RetrievalQA.from_chain_type(\n    llm=ChatOpenAI(model=\"gpt-4o-mini\", temperature=0),\n    chain_type=\"stuff\",\n    retriever=vectorstore.as_retriever(search_kwargs={\"k\": 3}),\n    return_source_documents=True,\n)\n\nresponse = qa.invoke(\n    {\"query\": \"What are the main features?\"}\n)\nprint(response[\"result\"])\nprint(f\"Sources: {len(response['source_documents'])}\")"},
+
+  {"type":"callout","text":"<b>Engineering Insight:</b> The `return_source_documents=True` flag lets you inspect which documents the model used to generate its answer. This is crucial for debugging and building trust with users through citations."},
+
+  {"type":"h2","text":"Key Takeaways"},
+  {"type":"bullet","text":"LangChain provides clean abstractions for building RAG pipelines"},
+  {"type":"bullet","text":"ChromaDB is ideal for prototyping; FAISS offers more speed for local use"},
+  {"type":"bullet","text":"Always include a \"don't know\" instruction in your prompt to prevent hallucination"},
+  {"type":"bullet","text":"Return source documents for debugging and attribution"},
+  {"type":"bullet","text":"Open-source embedding models (all-MiniLM-L6-v2) work well for local development"},
+
+  {"type":"pagebreak"},
+
+  {"type":"h1","text":"Chapter 9: Advanced RAG Patterns"},
+  {"type":"body","text":"Once you master basic RAG, there are several advanced patterns that address specific limitations. Three of the most important are <b>Agentic RAG</b>, <b>Graph RAG</b>, and <b>HyDE</b>."},
+
+  {"type":"h2","text":"Agentic RAG: Let the LLM Drive"},
+  {"type":"body","text":"In basic RAG, the retriever always runs, always retrieves the same number of documents (k), and always injects them into the prompt. <b>Agentic RAG</b> gives the LLM agency over the retrieval process:"},
+  {"type":"numbered","text":"The LLM decides <b>whether</b> to retrieve — it can skip retrieval for simple queries"},
+  {"type":"numbered","text":"The LLM decides <b>what</b> to search for — it can reformulate or decompose queries"},
+  {"type":"numbered","text":"The LLM decides <b>when</b> to retrieve — it can do multiple rounds of research"},
+  {"type":"numbered","text":"The LLM can use <b>tools</b> — calling APIs, querying databases, or browsing the web"},
+
+  {"type":"body","text":"Think of it like a research assistant who doesn't just hand you pre-selected documents but actively decides what to look up, in what order, and whether more information is needed."},
+
+  {"type":"h2","text":"Agentic RAG Flow"},
+  {"type":"flowchart",
+    "nodes": [
+      {"id":"q",       "label":"User Query",           "shape":"parallelogram"},
+      {"id":"think",   "label":"Does LLM Need More Info?","shape":"diamond"},
+      {"id":"skip",    "label":"Answer Directly",        "shape":"parallelogram"},
+      {"id":"reform",  "label":"Reformulate Query",      "shape":"rect"},
+      {"id":"search",  "label":"Search Vector DB",       "shape":"rect"},
+      {"id":"eval",    "label":"Evaluate Results",       "shape":"diamond"},
+      {"id":"more",    "label":"Search Again",           "shape":"rect"},
+      {"id":"answer",  "label":"Compose Final Answer",   "shape":"parallelogram"}
+    ],
+    "edges": [
+      {"from":"q","to":"think"},
+      {"from":"think","to":"skip","label":"No"},
+      {"from":"think","to":"reform","label":"Yes"},
+      {"from":"reform","to":"search"},
+      {"from":"search","to":"eval"},
+      {"from":"eval","to":"more","label":"Insufficient"},
+      {"from":"eval","to":"answer","label":"Sufficient"},
+      {"from":"more","to":"search"}
+    ],
+    "caption":"Agentic RAG — the LLM controls its own retrieval process"
+  },
+
+  {"type":"h2","text":"Graph RAG: Structured Knowledge"},
+  {"type":"body","text":"<b>Graph RAG</b> (developed by Microsoft) extracts entities and relationships from documents to build a knowledge graph. Instead of searching over raw text chunks, Graph RAG queries the graph structure, enabling:"},
+  {"type":"bullet","text":"<b>Multi-hop reasoning:</b> \"What products does the CEO's former company make?\""},
+  {"type":"bullet","text":"<b>Global summarization:</b> Summarize themes across the entire knowledge base"},
+  {"type":"bullet","text":"<b>Relationship-aware retrieval:</b> Find documents connected through entities"},
+
+  {"type":"body","text":"Think of it as the difference between a file cabinet (basic RAG) and a mind map (Graph RAG). The file cabinet stores documents; the mind map shows how everything connects."},
+
+  {"type":"h2","text":"HyDE: Hypothetical Document Embeddings"},
+  {"type":"body","text":"<b>HyDE</b> (Hypothetical Document Embeddings) is a clever technique: instead of searching with the user's question directly, you first ask an LLM to generate a <i>hypothetical answer</i>, then use that answer as the search query."},
+  {"type":"body","text":"The insight: queries and documents live in different regions of embedding space. A question like \"What causes inflation?\" is structurally different from a document about inflation. By generating a hypothetical document first, HyDE bridges this gap."},
+
+  {"type":"h2","text":"Patterns Comparison"},
+  {"type":"table",
+    "headers": ["Pattern", "Best For", "Complexity", "Trade-off"],
+    "rows": [
+      ["Basic RAG", "Simple Q&A, straightforward retrieval", "Low", "Fixed retrieval, no reasoning"],
+      ["Agentic RAG", "Complex, multi-step research tasks", "High", "Slower, more LLM calls"],
+      ["Graph RAG", "Connected data, entity relationships", "High", "Requires graph construction"],
+      ["HyDE", "Improving retrieval for ambiguous queries", "Medium", "Extra LLM call per query"],
+      ["Hybrid Search", "Mixed content (keywords + semantics)", "Medium", "Two search systems to maintain"]
+    ]
+  },
+
+  {"type":"callout","text":"<b>Production Tip:</b> Start with basic RAG and hybrid search. Only add Agentic or Graph RAG if your evaluation shows clear gaps that simpler approaches cannot fill. Complexity should be earned, not assumed."},
+
+  {"type":"h2","text":"Key Takeaways"},
+  {"type":"bullet","text":"Agentic RAG gives the LLM control over when and what to retrieve"},
+  {"type":"bullet","text":"Graph RAG extracts entities and relationships for structured reasoning"},
+  {"type":"bullet","text":"HyDE improves retrieval by searching with a hypothetical answer instead of the question"},
+  {"type":"bullet","text":"Start simple — add complexity only when evaluation proves it necessary"},
+  {"type":"bullet","text":"The RAG ecosystem is rapidly evolving; these patterns represent the current frontier"},
+
+  {"type":"pagebreak"},
+
+  {"type":"h1","text":"Chapter 10: Production Considerations"},
+  {"type":"body","text":"Building a RAG system that works on your laptop is one thing. Running it reliably in production is another. This chapter covers the critical considerations for production-ready RAG."},
+
+  {"type":"h2","text":"Performance & Latency"},
+  {"type":"body","text":"A production RAG system must balance <b>speed</b>, <b>quality</b>, and <b>cost</b>. Here are the typical latency contributions:"},
+  {"type":"table",
+    "headers": ["Component", "Typical Latency", "Optimization"],
+    "rows": [
+      ["Query embedding", "10-50ms", "Use smaller models, GPU inference"],
+      ["Vector search (ANN)", "5-50ms", "Tune HNSW ef_search parameter"],
+      ["Reranker (cross-encoder)", "50-200ms", "Only rerank top-20 results"],
+      ["LLM generation", "500ms-5s", "Use smaller models, streaming"],
+      ["Total", "~1-5s", "—"]
+    ]},
+
+  {"type":"h2","text":"Evaluation: Is Your RAG System Good?"},
+  {"type":"body","text":"You cannot improve what you don't measure. A comprehensive RAG evaluation framework should track:"},
+  {"type":"bullet","text":"<b>Retrieval Quality:</b> Precision@K, Recall@K, MRR"},
+  {"type":"bullet","text":"<b>Generation Quality:</b> Faithfulness (does output match context?), Answer Relevance"},
+  {"type":"bullet","text":"<b>End-to-End Quality:</b> Human evaluation, task completion rate"},
+  {"type":"bullet","text":"<b>Operational Metrics:</b> p50/p95/p99 latency, error rate, cost per query"},
+
+  {"type":"body","text":"Tools like <b>RAGAS</b> (RAG Assessment) provide automated evaluation metrics. TruLens and LangSmith offer observability and tracing."},
+
+  {"type":"h2","text":"Security Considerations"},
+  {"type":"bullet","text":"<b>Data exfiltration:</b> Ensure retrieved documents cannot be leaked through prompt injection"},
+  {"type":"bullet","text":"<b>Access control:</b> Users should only retrieve documents they have permission to see"},
+  {"type":"bullet","text":"<b>Content filtering:</b> Screen retrieved content for PII, toxic content, or policy violations"},
+  {"type":"bullet","text":"<b>Prompt injection:</b> Protect against poisoned documents that manipulate the LLM"},
+  {"type":"bullet","text":"<b>Rate limiting:</b> Protect your vector DB and LLM API from abuse"},
+
+  {"type":"callout","text":"<b>Production Tip:</b> Implement a \"human in the loop\" for high-stakes retrieval. Flag ambiguous or low-confidence retrievals for human review. This is especially critical in healthcare, legal, and financial applications."},
+
+  {"type":"h2","text":"RAG Maturity Model"},
+  {"type":"table",
+    "headers": ["Level", "Name", "Characteristics"],
+    "rows": [
+      ["L1", "Basic", "Single chunk retrieval, no reranking, fixed k"],
+      ["L2", "Structured", "Hybrid search, chunk overlap, metadata filtering"],
+      ["L3", "Optimized", "Reranker, query expansion, dynamic chunk sizes"],
+      ["L4", "Adaptive", "Agentic retrieval, self-correction, multi-hop"],
+      ["L5", "Autonomous", "Graph RAG, tool use, continuous learning"]
+    ]
+  },
+
+  {"type":"h2","text":"RAG Pipeline: The Full Picture"},
+  {"type":"body","text":"A production RAG system consists of two parallel pipelines — indexing (offline) and query (online). Here is the complete architecture with all components:"},
+
+  {"type":"flowchart",
+    "nodes": [
+      {"id":"doc",     "label":"Raw Documents",        "shape":"parallelogram"},
+      {"id":"chunk",   "label":"Chunk + Embed",         "shape":"rect"},
+      {"id":"store",   "label":"Vector Database",       "shape":"parallelogram"},
+      {"id":"query",   "label":"User Query",            "shape":"parallelogram"},
+      {"id":"search",  "label":"ANN Search",            "shape":"rect"},
+      {"id":"rrf",     "label":"Hybrid Fusion + Rerank","shape":"rect"},
+      {"id":"llm",     "label":"LLM Generation",        "shape":"rect"},
+      {"id":"answer",  "label":"Grounded Response",     "shape":"parallelogram"}
+    ],
+    "edges": [
+      {"from":"doc","to":"chunk"},
+      {"from":"chunk","to":"store"},
+      {"from":"query","to":"search"},
+      {"from":"search","to":"rrf"},
+      {"from":"query","to":"rrf"},
+      {"from":"rrf","to":"llm"},
+      {"from":"store","to":"search"},
+      {"from":"llm","to":"answer"}
+    ],
+    "caption":"Complete production RAG architecture showing both indexing and query paths"
+  },
+
+  {"type":"body","text":"The indexing pipeline (top) processes raw documents into searchable vectors. The query pipeline (bottom) retrieves the most relevant context and feeds it to the LLM for grounded generation."},
+
+  {"type":"h2","text":"Key Takeaways"},
+  {"type":"bullet","text":"Production RAG requires monitoring latency, quality, and cost"},
+  {"type":"bullet","text":"Evaluate both retrieval quality and generation faithfulness"},
+  {"type":"bullet","text":"Security is critical — access control, content filtering, and prompt injection protection"},
+  {"type":"bullet","text":"Use the RAG Maturity Model to plan your evolution"},
+  {"type":"bullet","text":"Start simple, measure everything, add complexity only when data justifies it"},
+
+  {"type":"pagebreak"},
+
+  {"type":"h1","text":"Appendix: References & Further Reading"},
+  {"type":"body","text":"This appendix provides references to the key papers, tools, and resources that shaped modern RAG systems. Use these as a starting point for deeper study."},
+
+  {"type":"h2","text":"Foundational Papers"},
+  {"type":"bibliography","title":"",
+    "items": [
+      {"id":"1","text":"Lewis, P. et al. (2020). \"Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.\" NeurIPS. — <i>The original RAG paper introducing the concept.</i>"},
+      {"id":"2","text":"Karpukhin, V. et al. (2020). \"Dense Passage Retrieval for Open-Domain Question Answering.\" EMNLP. — <i>Foundation for dense embedding-based retrieval.</i>"},
+      {"id":"3","text":"Gao, L. et al. (2022). \"Precise Zero-Shot Dense Retrieval without Relevance Labels.\" — <i>The HyDE paper.</i>"},
+      {"id":"4","text":"Edge, D. et al. (2024). \"From Local to Global: A Graph RAG Approach to Query-Focused Summarization.\" Microsoft Research."},
+      {"id":"5","text":"Malkov, Y. & Yashunin, D. (2016). \"Efficient and Robust Approximate Nearest Neighbor Search Using Hierarchical Navigable Small World Graphs.\" IEEE TPAMI. — <i>The HNSW paper.</i>"}
+    ]
+  },
+
+  {"type":"h2","text":"Tools & Frameworks"},
+  {"type":"bullet","text":"<b>LangChain</b> — The most popular framework for building RAG applications (python.langchain.com)"},
+  {"type":"bullet","text":"<b>LlamaIndex</b> — A data framework specifically designed for RAG (llamaindex.ai)"},
+  {"type":"bullet","text":"<b>ChromaDB</b> — Embedded vector database for prototyping (trychroma.com)"},
+  {"type":"bullet","text":"<b>FAISS</b> — High-performance vector search library from Meta (faiss.ai)"},
+  {"type":"bullet","text":"<b>RAGAS</b> — Automated evaluation framework for RAG pipelines (ragas.io)"},
+  {"type":"bullet","text":"<b>Weaviate / Qdrant / Pinecone</b> — Production-grade vector database services"},
+  {"type":"bullet","text":"<b>sentence-transformers</b> — Open-source embedding models (sbert.net)"},
+
+  {"type":"h2","text":"Learning Resources"},
+  {"type":"bullet","text":"<b>OpenAI Cookbook</b> — Practical RAG examples and patterns"},
+  {"type":"bullet","text":"<b>LangChain RAG Tutorials</b> — Official documentation with code examples"},
+  {"type":"bullet","text":"<b>Andrej Karpathy's \"Intro to Large Language Models\"</b> — Foundational LLM knowledge"},
+  {"type":"bullet","text":"<b>HuggingFace NLP Course</b> — Free course covering embeddings and transformers"},
+
+  {"type":"spacer","pt":12},
+
+  {"type":"callout","text":"<b>Final Thought:</b> RAG is not a solved problem — it is an active research area. The field is evolving weekly. Follow the papers, experiment with the tools, and always measure your results. The best RAG system is the one that solves your specific problem."},
+
+  {"type":"divider"},
+
+  {"type":"body","text":"This document was generated as an educational guide. For questions, corrections, or contributions, refer to the RAG community resources listed above."}
+]
