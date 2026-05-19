@@ -1,0 +1,21 @@
+product_id,product_name,category,unit_price,stock_quantity,supplier_id
+1,Wireless Mouse,Electronics,25.99,150,101
+2,Mechanical Keyboard,Electronics,89.99,80,101
+3,USB-C Hub,Electronics,45.50,200,102
+4,27-inch Monitor,Electronics,349.99,45,103
+5,Webcam HD,Electronics,79.99,120,101
+6,Noise Canceling Headphones,Electronics,199.99,65,102
+7,Standing Desk,Furniture,599.00,30,201
+8,Ergonomic Chair,Furniture,450.00,25,201
+9,Laptop Stand,Furniture,39.99,180,202
+10,Desk Lamp,Furniture,55.00,100,202
+11,Coffee Mug,Accessories,14.99,300,301
+12,Water Bottle,Accessories,19.99,250,301
+13,Backpack,Accessories,65.00,90,302
+14,Notebook Set,Accessories,12.50,400,301
+15,LED Desk Strip,Accessories,29.99,130,302
+16,Bluetooth Speaker,Electronics,149.99,55,103
+17,Monitor Arm,Furniture,89.00,70,202
+18,Cable Organizer,Accessories,9.99,500,301
+19,External SSD 1TB,Electronics,129.99,40,102
+20,Wrist Rest,Accessories,15.99,200,302

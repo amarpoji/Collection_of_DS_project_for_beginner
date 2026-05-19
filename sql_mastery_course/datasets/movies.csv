@@ -1,0 +1,41 @@
+movie_id,title,genre,release_year,rating,duration_min,director,studio,budget_millions,revenue_millions
+1,The Matrix,Sci-Fi,1999,8.7,136,Lana Wachowski,Warner Bros,63,467
+2,Inception,Sci-Fi,2010,8.8,148,Christopher Nolan,Warner Bros,160,836
+3,The Godfather,Crime,1972,9.2,175,Francis Ford Coppola,Paramount,6,246
+4,Pulp Fiction,Crime,1994,8.9,154,Quentin Tarantino,Miramax,8,213
+5,The Dark Knight,Action,2008,9.0,152,Christopher Nolan,Warner Bros,185,1005
+6,Forrest Gump,Drama,1994,8.8,142,Robert Zemeckis,Paramount,55,677
+7,Interstellar,Sci-Fi,2014,8.6,169,Christopher Nolan,Paramount,165,701
+8,Parasite,Thriller,2019,8.5,132,Bong Joon-ho,CJ Entertainment,11,258
+9,Spirited Away,Animation,2001,8.6,125,Hayao Miyazaki,Studio Ghibli,19,395
+10,The Shawshank Redemption,Drama,1994,9.3,142,Frank Darabont,Columbia,25,73
+11,Fight Club,Drama,1999,8.8,139,David Fincher,Fox,63,101
+12,Goodfellas,Crime,1990,8.7,146,Martin Scorsese,Warner Bros,25,47
+13,The Avengers,Action,2012,8.0,143,Joss Whedon,Marvel,220,1519
+14,Get Out,Horror,2017,7.7,104,Jordan Peele,Universal,4.5,255
+15,La La Land,Musical,2016,8.0,128,Damien Chazelle,Lionsgate,30,447
+16,Mad Max Fury Road,Action,2015,8.1,120,George Miller,Warner Bros,150,380
+17,The Grand Budapest Hotel,Comedy,2014,8.1,99,Wes Anderson,Fox,25,173
+18,Coco,Animation,2017,8.4,105,Lee Unkrich,Pixar,175,814
+19,The Social Network,Drama,2010,7.7,120,David Fincher,Columbia,40,224
+20,Whiplash,Drama,2014,8.5,106,Damien Chazelle,Sony,3.3,49
+21,Arrival,Sci-Fi,2016,7.9,116,Denis Villeneuve,Paramount,47,203
+22,Joker,Crime,2019,8.4,122,Todd Phillips,Warner Bros,55,1074
+23,Everything Everywhere All at Once,Sci-Fi,2022,7.8,139,Daniel Kwan,A24,25,143
+24,The Lion King,Animation,1994,8.5,88,Roger Allers,Disney,45,968
+25,Knives Out,Mystery,2019,7.9,130,Rian Johnson,Lionsgate,40,312
+26,Tenet,Sci-Fi,2020,7.3,150,Christopher Nolan,Warner Bros,200,365
+27,The Truman Show,Drama,1998,8.2,103,Peter Weir,Paramount,60,264
+28,Dune,Sci-Fi,2021,8.0,155,Denis Villeneuve,Warner Bros,165,407
+29,The Incredibles,Animation,2004,8.0,115,Brad Bird,Pixar,92,633
+30,The Prestige,Mystery,2006,8.5,130,Christopher Nolan,Warner Bros,40,109
+31,Shutter Island,Mystery,2010,8.2,138,Martin Scorsese,Paramount,80,295
+32,The Departed,Crime,2006,8.5,151,Martin Scorsese,Warner Bros,90,291
+33,Moana,Animation,2016,7.6,107,Ron Clements,Disney,150,643
+34,A Quiet Place,Horror,2018,7.5,90,John Krasinski,Paramount,17,341
+35,Jurassic Park,Action,1993,8.2,127,Steven Spielberg,Universal,63,1057
+36,1917,War,2019,8.3,119,Sam Mendes,Universal,95,385
+37,Soul,Animation,2020,8.0,100,Pete Docter,Pixar,150,142
+38,Gladiator,Action,2000,8.5,155,Ridley Scott,Universal,103,503
+39,The Batman,Action,2022,7.8,176,Matt Reeves,Warner Bros,200,772
+40,Whisper of the Heart,Animation,1995,7.9,111,Yoshifumi Kondo,Studio Ghibli,0.5,40

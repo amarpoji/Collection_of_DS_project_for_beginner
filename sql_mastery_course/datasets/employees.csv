@@ -1,0 +1,16 @@
+employee_id,first_name,last_name,email,phone,hire_date,job_title,salary,department_id,manager_id
+1,John,Smith,john.smith@company.com,555-0101,2018-03-15,Data Analyst,75000,1,NULL
+2,Jane,Doe,jane.doe@company.com,555-0102,2019-06-20,Software Engineer,95000,2,1
+3,Bob,Johnson,bob.johnson@company.com,555-0103,2020-01-10,Data Scientist,110000,1,1
+4,Alice,Williams,alice.williams@company.com,555-0104,2017-11-05,Product Manager,105000,3,1
+5,Charlie,Brown,charlie.brown@company.com,555-0105,2021-04-18,Junior Developer,65000,2,2
+6,Diana,Prince,diana.prince@company.com,555-0106,2019-09-12,Marketing Lead,85000,4,1
+7,Edward,Norton,edward.norton@company.com,555-0107,2022-02-28,Data Engineer,100000,1,3
+8,Fiona,Apple,fiona.apple@company.com,555-0108,2020-07-14,UX Designer,80000,3,4
+9,George,Harris,george.harris@company.com,555-0109,2016-05-22,CTO,200000,2,NULL
+10,Hannah,Martin,hannah.martin@company.com,555-0110,2021-11-30,Marketing Analyst,60000,4,6
+11,Ian,Clark,ian.clark@company.com,555-0111,2023-01-15,Jr Data Analyst,55000,1,3
+12,Julia,Roberts,julia.roberts@company.com,555-0112,2018-08-08,HR Manager,78000,5,NULL
+13,Kevin,Bacon,kevin.bacon@company.com,555-0113,2019-12-01,DevOps Engineer,92000,2,2
+14,Laura,Wilson,laura.wilson@company.com,555-0114,2020-04-05,Sales Representative,70000,6,1
+15,Michael,Jordan,michael.jordan@company.com,555-0115,2017-09-19,Sales Manager,130000,6,NULL

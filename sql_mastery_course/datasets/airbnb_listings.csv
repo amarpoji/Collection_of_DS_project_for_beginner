@@ -1,0 +1,21 @@
+property_id,property_name,host_id,neighbourhood,room_type,price,nights_booked,reviews,rating,bedrooms,bathrooms,superhost
+1,Cozy Studio Apt,101,Downtown,Entire home/apt,120,180,45,4.8,1,1,1
+2,Sunny Loft Space,102,Brooklyn,Private room,85,220,62,4.6,1,1,0
+3,Modern Riverside Apt,103,Manhattan,Entire home/apt,210,150,38,4.9,2,1,1
+4,Charming Brownstone,104,Brooklyn,Entire home/apt,175,130,28,4.5,2,1,0
+5,City View Penthouse,105,Manhattan,Entire home/apt,450,90,15,4.7,3,2,1
+6,Budget Friendly Room,106,Queens,Private room,55,300,82,4.3,1,1,0
+7,Luxury Condo Midtown,107,Manhattan,Entire home/apt,320,110,25,4.9,2,2,1
+8,Artsy Loft Williamsburg,108,Brooklyn,Entire home/apt,195,95,20,4.4,1,1,0
+9,Quiet Garden Studio,109,Queens,Entire home/apt,90,210,55,4.7,1,1,1
+10,Spacious Family Apt,110,Bronx,Entire home/apt,130,85,18,4.2,3,1,0
+11,The Penthouse Suite,111,Manhattan,Entire home/apt,600,60,10,5.0,4,3,1
+12,Hipster Hideaway,112,Brooklyn,Private room,70,250,70,4.5,1,1,0
+13,Waterfront Cottage,113,Staten Island,Entire home/apt,160,95,22,4.6,2,1,0
+14,Minimalist City Pad,114,Manhattan,Entire home/apt,280,75,12,4.8,1,1,1
+15,Suburban Comfort,115,Brooklyn,Entire home/apt,140,140,35,4.4,2,1,0
+16,Eco-Friendly Loft,116,Brooklyn,Entire home/apt,220,80,14,4.7,1,1,1
+17,Petite Room Near Park,117,Manhattan,Private room,95,190,48,4.6,1,1,0
+18,Cozy Queens Retreat,118,Queens,Entire home/apt,100,200,60,4.5,1,1,0
+19,Designer Studio Soho,119,Manhattan,Entire home/apt,190,120,30,4.8,1,1,1
+20,Staten Island Gem,120,Staten Island,Entire home/apt,110,160,40,4.3,2,1,0
