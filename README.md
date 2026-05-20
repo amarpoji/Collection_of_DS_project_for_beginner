@@ -58,7 +58,8 @@ I'm **amarpoji** — learning data science one project at a time. This repo is m
 | 9 | [**A/B Testing Analyzer**](./ab_testing_analyzer/) | Statistics | hypothesis testing, confidence intervals, z-test | `statistics` `ab-testing` `real-data` |
 |10 | [**RAG Pipeline from Scratch**](./rag_pipeline/) | GenAI · RAG | chunking strategies, sentence embeddings, ChromaDB, cross-encoder reranking, T5 generation | `rag` `llm` `vector-db` `genai` |
 |11 | [**SQL Mastery Course**](./sql_mastery_course/) | SQL · Database | 24 lessons, 65+ exercises, 5 projects + capstone, SQLite, JOINs, Window Functions, Query Optimization | `sql` `database` `learning` `curriculum` |
-
+|12 | [**Python for ML, DS, AI & DE**](./python_for_ml_ds_ai_de/) | Curriculum · Full-Stack | 25 modules, 152 files, 75 notebooks, NumPy, Pandas, sklearn, FastAPI, Airflow, ETL, deployment | `python` `ml` `data-science` `curriculum` `learning` |
+|
 <details>
 <summary><strong>📌 Planned / In Progress (Jupyter Notebooks)</strong></summary>
 <br/>
